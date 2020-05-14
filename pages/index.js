@@ -34,39 +34,47 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1 className="title">You got to loose to win!</h1>
-        <div>
+        <h1 className="title">Rejection App</h1>
+        <div className="description">You got to loose to win!</div>
+        <div className="form">
           <form onSubmit={handleSubmit}>
             <input name="question" type="text" placeholder="Question" />
             <input name="askee" type="text" placeholder="Askee" />
-            <button type="submit">Add</button>
+            <button className="button" type="submit">
+              Add
+            </button>
           </form>
         </div>
-        <div>
-          <ul>
-            {state.map((q, idx) => (
-              <li key={idx}>
-                <div>
-                  <div>
-                    {q.question} - {q.askee} - {q.status}
-                  </div>
-                  <button onClick={() => handleAnswer(q, 'accepted')}>Accepted</button>
-                  <button onClick={() => handleAnswer(q, 'rejected')}>Rejected</button>
-                </div>
-              </li>
-            ))}
-          </ul>
+        <div style={{ width: '100%', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid'}}>
+
+          {state.map((q, idx) => (
+            <div className="card" key={idx}>
+              <div style={{ marginBottom: '0.5rem' }}>
+                {q.question} <br />
+                {q.askee} <br />
+                {q.status}
+              </div>
+              <button onClick={() => handleAnswer(q, "Accepted")}>
+                Accepted
+              </button>
+              <span>{' '}</span>
+              <button onClick={() => handleAnswer(q, "Rejected")}>
+                Rejected
+              </button>
+            </div>
+
+          ))}
+
         </div>
       </main>
 
       <footer>
         <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://github.com/vilsbole/rejection"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{" "}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
+          source{" "}
         </a>
       </footer>
 
@@ -91,26 +99,11 @@ export default function Home() {
 
         footer {
           width: 100%;
-          height: 100px;
+          height: 5rem;
           border-top: 1px solid #eaeaea;
           display: flex;
           justify-content: center;
           align-items: center;
-        }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
         }
 
         .title a {
@@ -127,7 +120,7 @@ export default function Home() {
         .title {
           margin: 0;
           line-height: 1.15;
-          font-size: 4rem;
+          font-size: 3rem;
         }
 
         .title,
@@ -140,13 +133,22 @@ export default function Home() {
           font-size: 1.5rem;
         }
 
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+        .form {
+          margin-top: 2rem;
+          width: 100%;
+        }
+        .form > form {
+          display: flex;
+          flex-direction: column;
+        }
+        .button {
+          padding: 0.5rem;
+        }
+        input {
+          width: 100%;
+          height: 2rem;
+          margin-bottom: 1rem;
+          padding: 1rem;
         }
 
         .grid {
@@ -160,8 +162,9 @@ export default function Home() {
         }
 
         .card {
-          margin: 1rem;
+          width: 100%;
           flex-basis: 45%;
+          margin-bottom: 1rem;
           padding: 1.5rem;
           text-align: left;
           color: inherit;
@@ -209,6 +212,10 @@ export default function Home() {
           font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
             Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
             sans-serif;
+        }
+        button,
+        input {
+          font-size: 1rem;
         }
 
         * {
