@@ -1,23 +1,23 @@
 import { addQuestion, answerQuestion, deleteQuestion } from "./actions";
+import produce from "immer";
 
-const reducer = (state = {}, { type, payload } = {}) => {
+const reducer = produce((draft, { type, payload } = {}) => {
   switch (type) {
-    case addQuestion.type:
-      return { ...state, [payload.id]: payload };
-    case answerQuestion.type: {
-      return {
-        ...state,
-        [payload.id]: {
-          ...state[payload.id],
-          status: payload.status,
-        },
-      };
+    case addQuestion.type: {
+      draft[payload.id] = payload;
+      return;
     }
-    case deleteQuestion.type:
-      return { ...state, [payload.id]: undefined };
+    case answerQuestion.type: {
+      draft[payload.id].status = payload.status;
+      return;
+    }
+    case deleteQuestion.type: {
+      delete draft[payload.id];
+      return;
+    }
     default:
-      return state;
+      return;
   }
-};
+}, {});
 
 export default reducer;

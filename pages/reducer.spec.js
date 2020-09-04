@@ -5,6 +5,7 @@ import { addQuestion, answerQuestion, deleteQuestion } from "./actions";
 
 const createState = ({ questions }) =>
   questions.reduce((acc, q) => ({ ...acc, [q.id]: q }), {});
+const createQuestion = ({ ...props } = {}) => addQuestion(props).payload;
 
 const seed = [
   {
@@ -82,17 +83,16 @@ describe("Rejection Reducer", async (assert) => {
   }
 
   {
-    const state = createState({ questions });
-    const target = questions[0];
+    const state = createState({
+      questions: [createQuestion({ id: "foo" }), ...questions],
+    });
+    const { foo, ...expected } = state;
 
     assert({
       given: "a list of questions",
       should: "delete by id",
-      actual: reducer(state, deleteQuestion(target.id)),
-      expected: {
-        ...state,
-        [target.id]: undefined,
-      },
+      actual: reducer(state, deleteQuestion("foo")),
+      expected,
     });
   }
 });

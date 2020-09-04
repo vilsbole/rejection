@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import Head from "next/head";
-import { map, compose, values } from "ramda";
+import { map, pipe, values } from "ramda";
 import { addQuestion, answerQuestion, deleteQuestion } from "./actions";
 import reducer from "./reducer";
 
@@ -71,7 +71,7 @@ export default function Home() {
               borderTop: "1px solid",
             }}
           >
-            {state && compose(map(questionItem), values)(state)}
+            {state && pipe(values, map(questionItem))(state)}
           </div>
         </main>
 
