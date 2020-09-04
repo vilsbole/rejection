@@ -44,47 +44,49 @@ export default function Home() {
   );
 
   return (
-    <div className="container">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <div className="container">
+        <Head>
+          <title>Create Next App</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main>
-        <h1 className="title">Rejection App</h1>
-        <div className="description">You got to loose to win!</div>
-        <div className="form">
-          <form onSubmit={handleSubmit}>
-            <input name="question" type="text" placeholder="Question" />
-            <input name="askee" type="text" placeholder="Askee" />
-            <button className="button" type="submit">
-              Add
-            </button>
-          </form>
-        </div>
-        <div
-          style={{
-            width: "100%",
-            marginTop: "1rem",
-            paddingTop: "1rem",
-            borderTop: "1px solid",
-          }}
-        >
-          {state && compose(map(questionItem), values)(state)}
-        </div>
-      </main>
+        <main>
+          <h1 className="title">Rejection App</h1>
+          <div className="description">You got to loose to win!</div>
+          <div className="form">
+            <form onSubmit={handleSubmit}>
+              <input name="question" type="text" placeholder="Question" />
+              <input name="askee" type="text" placeholder="Askee" />
+              <button className="button" type="submit">
+                Add
+              </button>
+            </form>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              marginTop: "1rem",
+              paddingTop: "1rem",
+              borderTop: "1px solid",
+            }}
+          >
+            {state && compose(map(questionItem), values)(state)}
+          </div>
+        </main>
 
-      <footer>
-        <a
-          href="https://github.com/vilsbole/rejection"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          source{" "}
-        </a>
-      </footer>
-
-      <style jsx="true">{`
+        <footer>
+          <a
+            href="https://github.com/vilsbole/rejection"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            source{" "}
+          </a>
+        </footer>
+        <></>
+      </div>
+      <style jsx>{`
         .container {
           min-height: 100vh;
           padding: 0 0.5rem;
@@ -186,7 +188,7 @@ export default function Home() {
           color: #0070f3;
           border-color: #0070f3;
         }
-        .card > .delete {
+        .delete {
           color: grey;
           display: flex;
           justify-content: flex-end;
@@ -215,7 +217,7 @@ export default function Home() {
         }
       `}</style>
 
-      <style jsx="true" global="true">{`
+      <style jsx global>{`
         html,
         body {
           padding: 0;
@@ -233,6 +235,6 @@ export default function Home() {
           box-sizing: border-box;
         }
       `}</style>
-    </div>
+    </>
   );
 }
