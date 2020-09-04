@@ -1,8 +1,11 @@
-import { describe } from 'riteway';
-import { map, sortBy, prop } from 'ramda';
-import reducer, {addQuestion, answerQuestion } from './reducer'
+import { describe } from "riteway";
+import { map } from "ramda";
+import reducer from "./reducer";
+import { addQuestion, answerQuestion, deleteQuestion } from "./actions";
 
-const createState = ({ questions }) => questions.reduce((acc, q) => ({ [q.id]: q }), {});
+const createState = ({ questions }) =>
+  questions.reduce((acc, q) => ({ ...acc, [q.id]: q }), {});
+
 const seed = [
   {
     question: "May I have another baggel?",
@@ -21,10 +24,11 @@ const seed = [
     askee: "Rick",
   },
 ];
-const sortById = sortBy(prop('id'))
-const questions = map(s => addQuestion(s).payload, seed)
 
-describe('Rejection Reducer', async (assert) => {
+// For each seed call the actionCreator and return a list of payloads
+const questions = map((s) => addQuestion(s).payload, seed);
+
+describe("Rejection Reducer", async (assert) => {
   assert({
     given: "no arguments",
     should: "return valid initial state",
@@ -33,11 +37,11 @@ describe('Rejection Reducer', async (assert) => {
   });
 
   assert({
-    given: 'a question to add',
-    should: 'add the question to state',
+    given: "a question to add",
+    should: "add the question to state",
     actual: reducer(reducer(), addQuestion(questions[0])),
-    expected: createState({ questions: [questions[0]] })
-  })
+    expected: createState({ questions: [questions[0]] }),
+  });
 
   {
     const id = 1;
@@ -48,8 +52,8 @@ describe('Rejection Reducer', async (assert) => {
       timestamp,
       question: "May I have another baggel?",
       askee: "Barista",
-      status: "Accepted"
-    }).payload
+      status: "Accepted",
+    }).payload;
 
     const initialState = reducer(
       reducer(),
@@ -76,4 +80,19 @@ describe('Rejection Reducer', async (assert) => {
       }),
     });
   }
-})
+
+  {
+    const state = createState({ questions });
+    const target = questions[0];
+
+    assert({
+      given: "a list of questions",
+      should: "delete by id",
+      actual: reducer(state, deleteQuestion(target.id)),
+      expected: {
+        ...state,
+        [target.id]: undefined,
+      },
+    });
+  }
+});

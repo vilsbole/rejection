@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "riteway -r @babel/register -r @babel/polyfill pages/**/*.spec.js pages/**/*.test.js",
+    "test": "riteway -r @babel/register -r @babel/polyfill pages/**/*.spec.js pages/**/*.test.js | tap-nirvana",
     "watch": "watch 'clear && yarn test' ./pages"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "@babel/preset-react": "^7.9.4",
     "@babel/register": "^7.9.0",
     "riteway": "^6.1.2",
-    "tap-color": "^1.2.0"
+    "tap-color": "^1.2.0",
+    "tap-nirvana": "^1.1.0"
   }
 }

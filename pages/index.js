@@ -1,30 +1,47 @@
-import React, { useReducer } from 'react'
-import Head from 'next/head'
-import { addQuestion, answerQuestion } from './actions'
-import reducer from './reducer'
+import React, { useReducer } from "react";
+import Head from "next/head";
+import { map, compose, values } from "ramda";
+import { addQuestion, answerQuestion, deleteQuestion } from "./actions";
+import reducer from "./reducer";
 
-const createDispatch = (dispatch, action) => args => {
-  dispatch(action(args))
-}
+const createDispatch = (dispatch, action) => (args) => {
+  dispatch(action(args));
+};
 
 export default function Home() {
-  const [state, dispatch] = useReducer(reducer, reducer())
-  const createQuestion = createDispatch(dispatch, addQuestion)
-  const updateQuestion = createDispatch(dispatch, answerQuestion)
-
+  const [state, dispatch] = useReducer(reducer, reducer());
+  const addQ = createDispatch(dispatch, addQuestion);
+  const answerQ = createDispatch(dispatch, answerQuestion);
+  const deleteQ = createDispatch(dispatch, deleteQuestion);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const form = new FormData(e.target);
     const question = form.get("question");
     const askee = form.get("askee");
-    createQuestion({ question, askee })
-    e.target.reset()
-  }
+    addQ({ question, askee });
+    e.target.reset();
+  };
 
-  const handleAnswer = (question, status) => {
-    updateQuestion({ id: question.id, status })
-  }
+  const questionItem = ({ question, askee, status, id }) => (
+    <div className="card" key={id}>
+      <a className="delete" onClick={() => deleteQ(id)}>
+        x
+      </a>
+      <div style={{ marginBottom: "0.5rem" }}>
+        {question} <br />
+        {askee}
+      </div>
+      <div style={{ margin: "1em 0" }}>{status}</div>
+      <button onClick={() => answerQ({ id, status: "Accepted" })}>
+        Accepted
+      </button>
+      <span> </span>
+      <button onClick={() => answerQ({ id, status: "Rejected" })}>
+        Rejected
+      </button>
+    </div>
+  );
 
   return (
     <div className="container">
@@ -45,26 +62,15 @@ export default function Home() {
             </button>
           </form>
         </div>
-        <div style={{ width: '100%', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid'}}>
-
-          {state.map((q, idx) => (
-            <div className="card" key={idx}>
-              <div style={{ marginBottom: '0.5rem' }}>
-                {q.question} <br />
-                {q.askee} <br />
-                {q.status}
-              </div>
-              <button onClick={() => handleAnswer(q, "Accepted")}>
-                Accepted
-              </button>
-              <span>{' '}</span>
-              <button onClick={() => handleAnswer(q, "Rejected")}>
-                Rejected
-              </button>
-            </div>
-
-          ))}
-
+        <div
+          style={{
+            width: "100%",
+            marginTop: "1rem",
+            paddingTop: "1rem",
+            borderTop: "1px solid",
+          }}
+        >
+          {state && compose(map(questionItem), values)(state)}
         </div>
       </main>
 
@@ -78,7 +84,7 @@ export default function Home() {
         </a>
       </footer>
 
-      <style jsx>{`
+      <style jsx="true">{`
         .container {
           min-height: 100vh;
           padding: 0 0.5rem;
@@ -180,6 +186,11 @@ export default function Home() {
           color: #0070f3;
           border-color: #0070f3;
         }
+        .card > .delete {
+          color: grey;
+          display: flex;
+          justify-content: flex-end;
+        }
 
         .card h3 {
           margin: 0 0 1rem 0;
@@ -204,7 +215,7 @@ export default function Home() {
         }
       `}</style>
 
-      <style jsx global>{`
+      <style jsx="true" global="true">{`
         html,
         body {
           padding: 0;
